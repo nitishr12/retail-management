@@ -34,7 +34,9 @@ public class NewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8"); 
+        response.setContentType("text/html;charset=UTF-8");
+        String userName=request.getParameter("username");
+        String password=request.getParameter("password");
         try (PrintWriter out = response.getWriter()) {
             
             /* TODO output your page here. You may use following sample code. */
@@ -50,9 +52,9 @@ public class NewServlet extends HttpServlet {
             Connection con=DriverManager.getConnection(  
             "jdbc:mysql://localhost:3306/try","root","123456");   
             Statement stmt=con.createStatement();  
-            ResultSet rs=stmt.executeQuery("select * from table1");  
-            while(rs.next())  
-            out.println(rs.getString(1)+"  "+rs.getString(2));  
+            int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
+            ResultSet rs=stmt.executeQuery("select * from table1");   
+            out.println("Welcome "+userName);  
             con.close();  
         }catch(Exception e){ System.out.println(e);}
             out.println("</body>");
