@@ -9,7 +9,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,11 +51,20 @@ public class NewServlet extends HttpServlet {
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/try","root","123456");   
-            Statement stmt=con.createStatement();  
-            int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-            ResultSet rs=stmt.executeQuery("select * from table1");   
-            out.println("Welcome "+userName);  
+            "jdbc:mysql://localhost:3306/retail1","root","123456");
+            String query="select username from user where username= ? and password= ?";
+            PreparedStatement stmt=con.prepareStatement(query);
+            stmt.setString(1, userName);
+            stmt.setString(2, password);
+            //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
+            ResultSet rs=stmt.executeQuery();
+            if(rs.next())
+                out.println("Welcome "+rs.getString(1));  
+            else{
+                out.println("Incorrect UserName/Password");
+                RequestDispatcher rd= request.getRequestDispatcher("index.html");
+                rd.include(request, response);
+            }
             con.close();  
         }catch(Exception e){ System.out.println(e);}
             out.println("</body>");
