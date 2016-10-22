@@ -6,11 +6,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.*;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sweet_Home
  */
-@WebServlet(urlPatterns = {"/NewServlet"})
-public class NewServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/StoreHomeList"})
+public class StoreHomeList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,52 +31,15 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String userName=request.getParameter("username");
-        String password=request.getParameter("password");
         try (PrintWriter out = response.getWriter()) {
-            
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Hello World</title>");            
+            out.println("<title>Servlet StoreHomeList</title>");            
             out.println("</head>");
             out.println("<body>");
-            //out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            try{  
-            Class.forName("com.mysql.jdbc.Driver");  
-            Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","123456");
-            String query="select username,designation from user where username= ? and password= ?";
-            PreparedStatement stmt=con.prepareStatement(query);
-            stmt.setString(1, userName);
-            stmt.setString(2, password);
-            //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-            ResultSet rs=stmt.executeQuery();
-            if(rs.next())
-            {
-               if(rs.getString(2).equals("Warehouse Manager"))
-               //if(true)
-                {
-                    out.println("Welcome "+rs.getString(1));
-                    RequestDispatcher rd2= request.getRequestDispatcher("index.html");
-                    rd2.include(request, response);
-                }  
-               else
-               {
-                    out.println("Welcome "+rs.getString(1));
-                    RequestDispatcher rd2= request.getRequestDispatcher("store_rep_home.html");
-                    rd2.include(request, response);
-               }
-               
-            }  
-            else{
-                out.println("Incorrect UserName/Password");
-                RequestDispatcher rd= request.getRequestDispatcher("index.html");
-                rd.include(request, response);
-            }
-            con.close();  
-        }catch(Exception e){ System.out.println(e);}
+            out.println("<h1>Servlet StoreHomeList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
