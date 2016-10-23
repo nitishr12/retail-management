@@ -4,8 +4,16 @@
  * and open the template in the editor.
  */
 
+import com.sore.model.StoreItem;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,8 +39,8 @@ public class StoreHomeList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        /*try (PrintWriter out = response.getWriter()) {
+             TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -42,7 +50,34 @@ public class StoreHomeList extends HttpServlet {
             out.println("<h1>Servlet StoreHomeList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        }
+        }*/
+        
+        try{  
+            Class.forName("com.mysql.jdbc.Driver");  
+            Connection con=DriverManager.getConnection(  
+            "jdbc:mysql://localhost:3306/retail1","root","root");
+            String query="select * from global_item";
+            PreparedStatement stmt=con.prepareStatement(query);
+            //stmt.setString(1, userName);
+            //stmt.setString(2, password);
+            //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
+            ResultSet rs=stmt.executeQuery();
+            List<StoreItem> itemList=new ArrayList<StoreItem>();
+            while(rs.next()){
+                StoreItem item= new StoreItem();
+                item.setItem_id(rs.getInt(1));
+                item.setName(rs.getString(2));
+                item.setDescription(rs.getString(3));
+                item.setPrice_per_unit(rs.getInt(4));
+                itemList.add(item);
+            }
+            con.close();
+            request.setAttribute("item_list", itemList);
+        }catch(Exception e){ System.out.println(e);}
+            
+        request.getRequestDispatcher("store_rep.jsp").forward(request, response);
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

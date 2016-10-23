@@ -51,7 +51,7 @@ public class NewServlet extends HttpServlet {
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","123456");
+            "jdbc:mysql://localhost:3306/retail1","root","root");
             String query="select username,designation from user where username= ? and password= ?";
             PreparedStatement stmt=con.prepareStatement(query);
             stmt.setString(1, userName);
@@ -67,10 +67,10 @@ public class NewServlet extends HttpServlet {
                     RequestDispatcher rd2= request.getRequestDispatcher("index.html");
                     rd2.include(request, response);
                 }  
-               else
+               else if(rs.getString(2).equals("Store Representative"))
                {
                     out.println("Welcome "+rs.getString(1));
-                    RequestDispatcher rd2= request.getRequestDispatcher("store_rep_home.html");
+                    RequestDispatcher rd2= request.getRequestDispatcher("StoreHomeList");
                     rd2.include(request, response);
                }
                
