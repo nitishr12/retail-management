@@ -4,12 +4,17 @@
  * and open the template in the editor.
  */
 
+import com.sore.model.StoreItem;
+import com.sore.model.OrderList;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Sweet_Home
+ * @author Chinmay Rawool
  */
-@WebServlet(urlPatterns = {"/NewServlet"})
-public class NewServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/Confirm_Cart"})
+public class Confirm_Cart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,77 +41,64 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String userName=request.getParameter("username");
-        String password=request.getParameter("password");
-        try (PrintWriter out = response.getWriter()) {
-            
-            /* TODO output your page here. You may use following sample code. */
+        //try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Hello World</title>");            
+            out.println("<title>Servlet Confirm_Cart</title>");            
             out.println("</head>");
-            out.println("<body>");
-            //out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<body>");*/
+            
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
             "jdbc:mysql://localhost:3306/retail1","root","root");
-            String query="select username,designation,uid from user where username= ? and password= ?";
-            PreparedStatement stmt=con.prepareStatement(query);
-            stmt.setString(1, userName);
-            stmt.setString(2, password);
-            //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-            ResultSet rs=stmt.executeQuery();
-            if(rs.next())
-            {
-               if(rs.getString(2).equals("Warehouse Manager"))
-               //if(true)
-                {
-                    out.println("Welcome "+rs.getString(1));
-                    String query1="select warehouse_id from warehouse_manager where uid=?";
-                    PreparedStatement stmt2=con.prepareStatement(query1);
-                    
-                    stmt2.setString(1,rs.getString(3));
-                    //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-                    ResultSet rs3=stmt2.executeQuery();
-                    //out.println("Store id="+rs2.getString(1));
-                    while(rs3.next()){
-                        int warehouse_id=rs3.getInt(1);
-                        request.getSession().setAttribute("warehouse_id", warehouse_id);
-                    }
-                    RequestDispatcher rd2= request.getRequestDispatcher("StoreHomeList");
-                    rd2.include(request, response);
-                }  
-               else if(rs.getString(2).equals("Store Representative"))
-               {
-                    out.println("Welcome "+rs.getString(1));
-                    String query1="select store_id from store_representative where uid=?";
-                    PreparedStatement stmt1=con.prepareStatement(query1);
-                    
-                    stmt1.setString(1,rs.getString(3));
-                    //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-                    ResultSet rs2=stmt1.executeQuery();
-                    //out.println("Store id="+rs2.getString(1));
-                    while(rs2.next()){
-                        int store_id=rs2.getInt(1);
-                        request.getSession().setAttribute("store_id", store_id);
-                    }
-                    RequestDispatcher rd2= request.getRequestDispatcher("StoreHomeList");
-                    rd2.include(request, response);
-               }
-               
-            }  
-            else{
-                out.println("Incorrect UserName/Password");
-                RequestDispatcher rd= request.getRequestDispatcher("index.html");
-                rd.include(request, response);
+            
+            List<StoreItem> list = (List<StoreItem>) request.getSession().getAttribute("cart");
+                System.out.println("Confirm_Cart.processRequest() size  is -- "+list.size());
+            int total=0;
+            for(int i=0;i<list.size();i++){
+                total=total+list.get(i).getQuantity()*list.get(i).getPrice_per_unit();
             }
+            int s_id=(Integer)request.getSession().getAttribute("store_id");
+            String query="INSERT INTO store_order (store_id,warehouse_id,delivery_date,total_price,status) VALUES ( ?, ?, ?, ?, 'Order Placed');";
+            PreparedStatement stmt=con.prepareStatement(query);
+            stmt.setInt(1, s_id);
+            stmt.setInt(2,1);
+            stmt.setString(3,"20161010");
+            stmt.setInt(4,total);
+            stmt.executeUpdate();
+            PreparedStatement stmt2=con.prepareStatement("SELECT LAST_INSERT_ID();");
+            ResultSet rs2=stmt2.executeQuery();
+            int order_id=-1;
+            if(rs2.next())
+                    order_id=rs2.getInt(1);
+            else
+                    System.out.println("Confirm_Cart.processRequest() - No order ");
+            
+                    for(int i=0;i<list.size();i++){
+                        String query1="INSERT INTO store_order_item (order_id, item_id, quantity_ordered) VALUES (?,?,?);";
+                        PreparedStatement stmt1=con.prepareStatement(query1);
+                        stmt1.setInt(1,order_id);
+                        stmt1.setInt(2,list.get(i).getItem_id());
+                        stmt1.setInt(3, list.get(i).getQuantity());
+                        stmt1.executeUpdate();
+                        //stmt1.close();
+                    }
+                    out.println("Order placed!");
+                    RequestDispatcher rd2= request.getRequestDispatcher("StoreHomeList");
+                    rd2.include(request, response);
+                    
+            
+
             con.close();  
         }catch(Exception e){ System.out.println(e);}
-            out.println("</body>");
-            out.println("</html>");
-        }
+            //out.println("</body>");
+            //out.println("</html>");
+            
+            
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

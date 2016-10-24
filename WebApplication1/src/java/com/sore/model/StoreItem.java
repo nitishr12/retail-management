@@ -5,6 +5,12 @@
  */
 package com.sore.model;
 
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import static java.lang.System.out;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author Chinmay Rawool
@@ -52,6 +58,9 @@ public class StoreItem {
     public void setPrice_per_unit(int price_per_unit) {
         this.price_per_unit = price_per_unit;
     }
+    
+    
+    
     
     
             

@@ -14,15 +14,28 @@
     <script type="text/javascript">
     function addItem(item_id){
     var quantity = document.getElementById('quant'+item_id).value;
+    var desc = document.getElementById('desc'+item_id).value;
+    var ppu = document.getElementById('price'+item_id).value;
+    var name = document.getElementById('name'+item_id).value;
     alert(item_id+" and "+quantity+" quant "+item_id);
     $.post("AddItem",
     {
+        action:"add_item",
         id: item_id,
-        quant:quantity
+        quant:quantity,
+        name:name,
+        desc:desc,
+        price:ppu
     },
     function(data, status){
         alert("Data: " + data + "\nStatus: " + status);
     });
+    }
+    
+    function placeOrder(){
+    //var quantity = document.getElementById('quant'+item_id).value;
+    //alert(item_id+" and "+quantity+" quant "+item_id);
+    window.location.href="AddItem?action=Place";
     }
 </script>
 <style>
@@ -68,6 +81,12 @@ tr:nth-child(even) {
     </div>
     
     <div align="center">
+    <div align="center">
+        <a href="viewOrder"><h2>View Order</h2></a>
+    </div>
+    
+    <div align="center">
+        
 <table>
     <h1>Global Item List</h1>
     <tr/>
@@ -87,7 +106,11 @@ tr:nth-child(even) {
     <td>${item.price_per_unit}</td>
     
     <td>
-        <input type="number" name="btnQuantity" min="1" max="5" value="1" id="quant${item.item_id}"/> 
+        <input type="number" name="btnQuantity" min="1" max="5" value="1" id="quant${item.item_id}"/>
+        <input type="hidden" name="btnQuantity" value="${item.name}" id="name${item.item_id}"/>
+        <input type="hidden" name="btnQuantity" value="${item.description}" id="desc${item.item_id}"/>
+        <input type="hidden" name="btnQuantity" value="${item.price_per_unit}" id="price${item.item_id}"/>
+        
     </td>
     <td>
         <button type="button" onclick="addItem(${item.item_id})">Add to Cart</button>
@@ -98,7 +121,7 @@ tr:nth-child(even) {
 </table>
     </div>
     <br/>
-    <button type="submit" class="button button1">Place order</button>
+    <button type="submit" class="button button1" onclick="placeOrder()">Place order</button>
     
 </body>
 
