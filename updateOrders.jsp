@@ -1,8 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="java.util.*" %>
+    <%@ page import= "java.awt.List"%>
+<%@ page import="java.io.IOException"%>
+<%@ page import="java.io.PrintWriter"%>
+<%@ page import="java.sql.DriverManager"%>
+<%@ page import="java.sql.PreparedStatement"%>
+<%@ page import="java.sql.ResultSet"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.Collection"%>
+<%@ page import="com.sore.model.*"%>
+<%@ page import="com.mysql.jdbc.Connection"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.sore.model.*"  %>
 <!DOCTYPE html>
 <html >
   <head>
@@ -110,72 +120,48 @@ tr:nth-child(even) {
 
       </style>
     <meta charset="UTF-8">
-    <title>Warehouse Inventory</title>    
+    <title>Update Orders</title>    
   </head>
   <body>
+  <%Order obj=null;
+  int item_id=0;%>
  <div class="container">
   <div class="warehouse">
-  	<h1 class="warehouse-heading">
-  	<%
-  	String name=(String)request.getAttribute("name");
-  	String uid=(String)request.getAttribute("userid");
-  	%>
-      <strong>Welcome, <%=name  %></strong></h1>
-      <form method="post" action="Warehouse">
-      <% if (uid!=null) { %>
-        <input name="userid" type="hidden" value="<%=uid%>" />
-         <input name="name" type="hidden" value="<%=name %>"/>
-         <button type="submit" class="btn btn--right">View Items</button>
-       <% } %>
-      </form>
-      
-    <div>
-      	<%
-  	String pName=(String)request.getAttribute("Name");
-  	String line1=(String)request.getAttribute("line1");
-  	String line2=(String)request.getAttribute("line2");
-  	String city=(String)request.getAttribute("city");
-  	String wid=(String)request.getAttribute("wid");
-  	ArrayList<WarehouseItem> result=(ArrayList<WarehouseItem>)request.getAttribute("item_list");
-  	WarehouseItem obj=new WarehouseItem(null,null,0);
-  	int i;
-  	boolean flag=false;
-  	%>	
-  	<h2 class=login-footer>
-  	<% if (pName!=null) { %>
-  	Address:<br>
-  	<%=pName %><br>
-  	<%=line1 %>
-  	<%=line2 %><br>
-  	<%=city %><br>
-  	<br>
-  	<strong>Warehouse Items:</strong>
-  	<div align="center">
-  	<table>
-  	<tr>
-    <th><strong>Item Name</strong></th>
-    <th><strong>Description</strong></th>
-    <th><strong>Quantity</strong></th>
-    </tr>
-  	<%for(i=0;i<result.size();i++) { obj=result.get(i);%>
-  	<tr>
-  	<td><%=obj.name%></td>
-  	<td><%=obj.desc%></td>
-  	<td><%=obj.quantity%></td>
-  	</tr>
-  	<%} %>   
-  	</table>
-  	</div>
-  	
-  	<form method="post" action="WarehouseOrder">
-  		<input type="hidden" value=<%=wid %> name="wID"/>
-  		<button type="submit" class="btn btn--right">Store Orders</button>
-  	</form>
-  	<%}%>
-  	</h2>
-  	
+  	<%try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
+      		String option[]=request.getParameterValues("id");
+      		PreparedStatement pst = conn.prepareStatement("select s.order_id,s1.quantity_ordered,s.delivery_date,s.status,s1.item_id from retail1.store_order s inner join retail1.store_order_item s1 on s.order_id=s1.order_id where s.order_id=?");
+      		pst.setInt(1, Integer.parseInt(option[0]));
+      		//System.out.println(option[0]);
+      		ResultSet rs = pst.executeQuery();
+      		rs.next();
+      		obj=new Order(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4));
+      		item_id=rs.getInt(5);
+      		//System.out.println(rs.getInt(1)+" "+rs.getInt(2)+" "+rs.getString(3)+" "+rs.getString(4));
+  	}
+  	catch(Exception e){
+		e.printStackTrace();
+	}
+      %> 
+    <form action="executeQuery" method="post">
+    <table>
+    <tr>
+    <th><strong>Order Number</strong></th>
+    <th><strong>Quantity Required</strong></th>
+    <th><strong>DeliveryDate</strong></th>
+    <th><strong>Status</strong></th></tr>
+    <tr>
+    <td><input type="text" name="order" value=<%=obj.orderID%>></td>
+  	<td><input type="text" name="quantity" value=<%=obj.quantityOrdered%>></td>
+  	<td><%=obj.deliveryDate%></td>
+  	<td><%=obj.order%></td>
+    </tr>     
+    </table>
+    <input type="hidden" name="item_id" value=<%=item_id %>>
+    <button type="submit" class="btn btn--right">OK</button>
+    </form>
    </div>
-  </div>
-</div>    
+  </div>  
   </body>
 </html>

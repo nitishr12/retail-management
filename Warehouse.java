@@ -66,6 +66,7 @@ public class Warehouse extends HttpServlet {
             	request.setAttribute("line1", rs.getString(2));
             	request.setAttribute("line2", rs.getString(3));
             	request.setAttribute("city", rs.getString(4));
+            	request.setAttribute("wid", rs.getString(5));
             	PreparedStatement pst1 = conn.prepareStatement("select g.name,g.description,w.quantity_available from retail1.global_item g inner join retail1.warehouse_stock w on g.item_id=w.item_id where w.warehouse_id=?");
             	pst1.setInt(1, Integer.parseInt(rs.getString(5)));
             	ResultSet rs1 = pst1.executeQuery();
@@ -73,7 +74,7 @@ public class Warehouse extends HttpServlet {
             	WarehouseItem item=null;
             	//String result[][]=new String[length][3];
             	if(rs1.last()){
-	            	rs1.first();
+	            	rs1.beforeFirst();
 	            	while(rs1.next()){
 	                	item= new WarehouseItem(rs1.getString(1),rs1.getString(2),rs1.getInt(3));
 	            		itemList.add(item);

@@ -25,4 +25,21 @@
         <servlet-name>Warehouse</servlet-name>
         <url-pattern>/Warehouse</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>WarehouseOrder</servlet-name>
+        <servlet-class>WarehouseOrder</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WarehouseOrder</servlet-name>
+        <url-pattern>/WarehouseOrder</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>executeQuery</servlet-name>
+        <servlet-class>executeQuery</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>executeQuery</servlet-name>
+        <url-pattern>/executeQuery</url-pattern>
+    </servlet-mapping>
     </web-app>

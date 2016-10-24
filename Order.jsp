@@ -110,72 +110,46 @@ tr:nth-child(even) {
 
       </style>
     <meta charset="UTF-8">
-    <title>Warehouse Inventory</title>    
+    <title>Orders</title>    
   </head>
   <body>
  <div class="container">
   <div class="warehouse">
-  	<h1 class="warehouse-heading">
-  	<%
-  	String name=(String)request.getAttribute("name");
-  	String uid=(String)request.getAttribute("userid");
-  	%>
-      <strong>Welcome, <%=name  %></strong></h1>
-      <form method="post" action="Warehouse">
-      <% if (uid!=null) { %>
-        <input name="userid" type="hidden" value="<%=uid%>" />
-         <input name="name" type="hidden" value="<%=name %>"/>
-         <button type="submit" class="btn btn--right">View Items</button>
-       <% } %>
-      </form>
-      
-    <div>
-      	<%
-  	String pName=(String)request.getAttribute("Name");
-  	String line1=(String)request.getAttribute("line1");
-  	String line2=(String)request.getAttribute("line2");
-  	String city=(String)request.getAttribute("city");
-  	String wid=(String)request.getAttribute("wid");
-  	ArrayList<WarehouseItem> result=(ArrayList<WarehouseItem>)request.getAttribute("item_list");
-  	WarehouseItem obj=new WarehouseItem(null,null,0);
+  	
+   <%
+  	ArrayList<Order> result=(ArrayList<Order>)request.getAttribute("order_list");
+  	Order obj=new Order(0,0,null,null);
   	int i;
-  	boolean flag=false;
   	%>	
-  	<h2 class=login-footer>
-  	<% if (pName!=null) { %>
-  	Address:<br>
-  	<%=pName %><br>
-  	<%=line1 %>
-  	<%=line2 %><br>
-  	<%=city %><br>
-  	<br>
-  	<strong>Warehouse Items:</strong>
+  	
+  	<h2>  	
+  	<strong>Warehouse Orders:</strong>
   	<div align="center">
+  	<form ACTION="updateOrders.jsp" method="post">
   	<table>
   	<tr>
-    <th><strong>Item Name</strong></th>
-    <th><strong>Description</strong></th>
-    <th><strong>Quantity</strong></th>
+  	<th><strong>Choice</strong></th>
+    <th><strong>Order Number</strong></th>
+    <th><strong>Quantity Required</strong></th>
+    <th><strong>DeliveryDate</strong></th>
+    <th><strong>Status</strong></th>
     </tr>
   	<%for(i=0;i<result.size();i++) { obj=result.get(i);%>
   	<tr>
-  	<td><%=obj.name%></td>
-  	<td><%=obj.desc%></td>
-  	<td><%=obj.quantity%></td>
+  	<td><input type="checkbox" name="id" value=<%=obj.orderID %>></td>
+  	<td><%=obj.orderID%></td>
+  	<td><%=obj.quantityOrdered%></td>
+  	<td><%=obj.deliveryDate%></td>
+  	<td><%=obj.order%></td>
   	</tr>
   	<%} %>   
   	</table>
-  	</div>
-  	
-  	<form method="post" action="WarehouseOrder">
-  		<input type="hidden" value=<%=wid %> name="wID"/>
-  		<button type="submit" class="btn btn--right">Store Orders</button>
+  	<input type="submit" value="Submit"/>
   	</form>
-  	<%}%>
+  	</div>
   	</h2>
   	
    </div>
-  </div>
-</div>    
+  </div>  
   </body>
 </html>
