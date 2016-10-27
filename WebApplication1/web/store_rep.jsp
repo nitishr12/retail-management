@@ -95,7 +95,6 @@ tr:nth-child(even) {
     <th>Item Name</th>
     <th>Description</th>
     <th>Price(per unit in $)</th>
-    <th>Select item</th>
     <th>Quantity</th>
   </tr>
   <c:forEach items="${item_list}" var="item">
@@ -112,6 +111,7 @@ tr:nth-child(even) {
         <input type="hidden" name="btnQuantity" value="${item.price_per_unit}" id="price${item.item_id}"/>
         
     </td>
+    
     <td>
         <button type="button" onclick="addItem(${item.item_id})">Add to Cart</button>
     </td>
