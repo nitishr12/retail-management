@@ -27,6 +27,7 @@ public class StoreItem {
         this.quantity = quantity;
     }
 
+
     public String getName() {
         return name;
     }

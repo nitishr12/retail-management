@@ -49,7 +49,11 @@ public class Confirm_Cart extends HttpServlet {
             out.println("<title>Servlet Confirm_Cart</title>");            
             out.println("</head>");
             out.println("<body>");*/
-            
+            String date="20161029";
+            //String action = request.getParameter("action");
+            //if(action.equals("date_order")){
+             //date = (String) request.getParameter("date");
+            //}
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
@@ -62,11 +66,12 @@ public class Confirm_Cart extends HttpServlet {
                 total=total+list.get(i).getQuantity()*list.get(i).getPrice_per_unit();
             }
             int s_id=(Integer)request.getSession().getAttribute("store_id");
+            //int w_id=(Integer)request.getSession().getAttribute("warehouse_id");
             String query="INSERT INTO store_order (store_id,warehouse_id,delivery_date,total_price,status) VALUES ( ?, ?, ?, ?, 'Order Placed');";
             PreparedStatement stmt=con.prepareStatement(query);
             stmt.setInt(1, s_id);
             stmt.setInt(2,1);
-            stmt.setString(3,"20161010");
+            stmt.setString(3,date);
             stmt.setInt(4,total);
             stmt.executeUpdate();
             PreparedStatement stmt2=con.prepareStatement("SELECT LAST_INSERT_ID();");

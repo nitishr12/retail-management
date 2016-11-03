@@ -63,19 +63,10 @@ public class NewServlet extends HttpServlet {
                if(rs.getString(2).equals("Warehouse Manager"))
                //if(true)
                 {
-                    out.println("Welcome "+rs.getString(1));
-                    String query1="select warehouse_id from warehouse_manager where uid=?";
-                    PreparedStatement stmt2=con.prepareStatement(query1);
-                    
-                    stmt2.setString(1,rs.getString(3));
-                    //int i=stmt.executeUpdate("insert into table1 values('"+userName+"','"+password+"')");
-                    ResultSet rs3=stmt2.executeQuery();
-                    //out.println("Store id="+rs2.getString(1));
-                    while(rs3.next()){
-                        int warehouse_id=rs3.getInt(1);
-                        request.getSession().setAttribute("warehouse_id", warehouse_id);
-                    }
-                    RequestDispatcher rd2= request.getRequestDispatcher("StoreHomeList");
+                    //out.println("Welcome "+rs.getString(1));
+                    request.setAttribute("name", rs.getString(1));
+                    request.setAttribute("userid", rs.getString(3));
+                    RequestDispatcher rd2= request.getRequestDispatcher("warehouse.jsp");
                     rd2.include(request, response);
                 }  
                else if(rs.getString(2).equals("Store Representative"))

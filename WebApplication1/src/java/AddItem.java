@@ -39,6 +39,7 @@ public class AddItem extends HttpServlet {
         String name = (String) request.getParameter("name");
         String desc = (String) request.getParameter("desc");
         String price = (String) request.getParameter("price");
+        //String date = (String) request.getParameter("date1");
          response.setContentType("text/plain");
          StoreItem item = new StoreItem();
          item.setItem_id(Integer.parseInt(id));
@@ -46,6 +47,7 @@ public class AddItem extends HttpServlet {
          item.setName(name);
          item.setDescription(desc);
          item.setPrice_per_unit(Integer.parseInt(price));
+        // item.setDate1(date);
          cart.add(item);
          System.out.println(cart);
         PrintWriter outPrintWriter = response.getWriter();

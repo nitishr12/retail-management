@@ -75,6 +75,7 @@ tr:nth-child(even) {
     <th>Quantity ordered</th>
     <th>Price(per unit in $)</th>
     <th>total</th>
+    
     <th>Delete Item</th>
   </tr>
   <c:forEach items="${cart}" var="cartItem">
@@ -85,7 +86,6 @@ tr:nth-child(even) {
     <td>${cartItem.quantity}</td>
     <td>${cartItem.price_per_unit}</td>
     <td>${cartItem.quantity * cartItem.price_per_unit}</td>
-    
     <td>
         <button type="submit" class="btn btn--right" onclick="removeEntry(cartItem.item_id)">Remove</button>
     </td>
