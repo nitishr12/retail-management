@@ -49,7 +49,7 @@ public class WarehouseOrder extends HttpServlet {
 		String wid=request.getParameter("wID");
 		try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
             PreparedStatement pst = conn.prepareStatement("select s.order_id,g.description,s1.quantity_ordered,s.delivery_date,s.status from retail1.store_order s inner join retail1.store_order_item s1 on s.order_id=s1.order_id inner join retail1.global_item g on s1.item_id=g.item_id where s.warehouse_id=?");
             pst.setInt(1, Integer.parseInt(wid));
             ResultSet rs = pst.executeQuery();

@@ -69,24 +69,32 @@ tr:nth-child(even) {
   <tr>
     <th>Order Id</th>
     <th>Item Id</th>
-    <th>Warehouse Id</th>
     <th>Store Id</th>
     <th>quantity</th>
     <th>Price(per unit in $)</th>
     <th>date</th>
     <th>Status</th>
+    <th></th>
   </tr>
   <c:forEach items="${item_list1}" var="order">
   <tr>
     <td>${order.order_id}</td>
     <td>${order.item_id}</td>
-    <td>${order.warehouse_id}</td>
     <td>${order.store_id}</td>
     <td>${order.quantity_ordered}</td>
     <td>${order.price}</td>
     <td>${order.delivery_date}</td>
     <td>${order.status}</td>
-   
+    <td>
+        <form name="update" action="updateActiceOrder">
+            <input type="submit" value="Update"/>
+            <input type="hidden" name="action" value="update"/>
+        </form> 
+        <form name="delete" action="updateActiceOrder">
+            <input type="submit" value="Delete"/>
+            <input type="hidden" name="action" value="delete"/>
+        </form> 
+    </td>
   </tr>
  </c:forEach>
   

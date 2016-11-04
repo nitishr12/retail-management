@@ -51,7 +51,7 @@ public class NewServlet extends HttpServlet {
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","root");
+            "jdbc:mysql://localhost:3306/retail1","root","admin");
             String query="select username,designation,uid from user where username= ? and password= ?";
             PreparedStatement stmt=con.prepareStatement(query);
             stmt.setString(1, userName);

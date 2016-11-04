@@ -4,9 +4,17 @@
         <servlet-name>AddItem</servlet-name>
         <servlet-class>AddItem</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateActiveOrder</servlet-name>
+        <servlet-class>updateActiveOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddItem</servlet-name>
         <url-pattern>/AddItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateActiceOrder</servlet-name>
+        <url-pattern>/updateActiceOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

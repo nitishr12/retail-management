@@ -57,7 +57,7 @@ public class Confirm_Cart extends HttpServlet {
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","root");
+            "jdbc:mysql://localhost:3306/retail1","root","admin");
             
             List<StoreItem> list = (List<StoreItem>) request.getSession().getAttribute("cart");
                 System.out.println("Confirm_Cart.processRequest() size  is -- "+list.size());
@@ -67,12 +67,11 @@ public class Confirm_Cart extends HttpServlet {
             }
             int s_id=(Integer)request.getSession().getAttribute("store_id");
             //int w_id=(Integer)request.getSession().getAttribute("warehouse_id");
-            String query="INSERT INTO store_order (store_id,warehouse_id,delivery_date,total_price,status) VALUES ( ?, ?, ?, ?, 'Order Placed');";
+            String query="INSERT INTO store_order (store_id,delivery_date,total_price,status) VALUES ( ?, ?, ?, 'Order Placed');";
             PreparedStatement stmt=con.prepareStatement(query);
             stmt.setInt(1, s_id);
-            stmt.setInt(2,1);
-            stmt.setString(3,date);
-            stmt.setInt(4,total);
+            stmt.setString(2,date);
+            stmt.setInt(3,total);
             stmt.executeUpdate();
             PreparedStatement stmt2=con.prepareStatement("SELECT LAST_INSERT_ID();");
             ResultSet rs2=stmt2.executeQuery();

@@ -42,7 +42,7 @@ public class viewOrder extends HttpServlet {
         try{
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","root");
+            "jdbc:mysql://localhost:3306/retail1","root","admin");
             String query="select * from store_order so inner join store_order_item soi on so.order_id=soi.order_id ORDER BY so.order_id DESC";
             PreparedStatement stmt=con.prepareStatement(query);
             //stmt.setString(1, userName);
@@ -57,11 +57,10 @@ public class viewOrder extends HttpServlet {
                 order.setOrder_id(rs.getInt(1));
                 order.setStore_id(rs.getInt(2));
                 order.setDelivery_date(rs.getString(3));
-                order.setWarehouse_id(rs.getInt(4));
-                order.setPrice(rs.getInt(5));
-                order.setStatus(rs.getString(6));
-                order.setItem_id(rs.getInt(7));
-                order.setQuantity_ordered(rs.getInt(8));
+                order.setPrice(rs.getInt(4));
+                order.setStatus(rs.getString(5));
+                order.setItem_id(rs.getInt(6));
+                order.setQuantity_ordered(rs.getInt(7));
                 itemList1.add(order);
             }
             con.close();
