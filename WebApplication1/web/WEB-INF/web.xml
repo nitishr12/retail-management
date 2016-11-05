@@ -13,8 +13,8 @@
         <url-pattern>/AddItem</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>updateActiceOrder</servlet-name>
-        <url-pattern>/updateActiceOrder</url-pattern>
+        <servlet-name>updateActiveOrder</servlet-name>
+        <url-pattern>/updateActiveOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

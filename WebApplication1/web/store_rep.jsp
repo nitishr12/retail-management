@@ -83,6 +83,7 @@ tr:nth-child(even) {
     <div align="center">
     <div align="center">
         <a href="viewOrder"><h2>View Order</h2></a>
+        <a href="manageStoreOrders.jsp"><h2>Manage Active Orders</h2></a>
     </div>
     
     <div align="center">

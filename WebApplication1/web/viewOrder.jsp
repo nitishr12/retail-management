@@ -85,16 +85,6 @@ tr:nth-child(even) {
     <td>${order.price}</td>
     <td>${order.delivery_date}</td>
     <td>${order.status}</td>
-    <td>
-        <form name="update" action="updateActiceOrder">
-            <input type="submit" value="Update"/>
-            <input type="hidden" name="action" value="update"/>
-        </form> 
-        <form name="delete" action="updateActiceOrder">
-            <input type="submit" value="Delete"/>
-            <input type="hidden" name="action" value="delete"/>
-        </form> 
-    </td>
   </tr>
  </c:forEach>
   
