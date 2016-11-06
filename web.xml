@@ -42,4 +42,12 @@
         <servlet-name>executeQuery</servlet-name>
         <url-pattern>/executeQuery</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>InsertPom</servlet-name>
+        <servlet-class>InsertPom</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InsertPom</servlet-name>
+        <url-pattern>/InsertPom</url-pattern>
+    </servlet-mapping>
     </web-app>

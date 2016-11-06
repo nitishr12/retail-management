@@ -3,6 +3,8 @@
     <%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.sore.model.*"  %>
+<%@page import="com.google.gson.*"  %>
+<%@page import="com.google.gson.Gson"  %>
 <%@ page import="java.io.IOException"%>
 <%@ page import="java.io.PrintWriter"%>
 <%@ page import="java.sql.DriverManager"%>
@@ -129,16 +131,18 @@ tr:nth-child(even) {
   	<%
   	String name=(String)request.getAttribute("name");
   	String uid=(String)request.getAttribute("userid");
+  	String ord="placed";
+  	int i=0;
+  	Gson gson=new Gson();
+  	ArrayList<Pom> list=new ArrayList<Pom>();
+  	Pom obj=null;
   	%>
       <strong>Welcome, <%=name  %></strong></h1>
-
-    <div>
-    <h2 class=login-footer>
-      	<%
-      	try {
+	 <strong>PO Orders to POM User:</strong>
+      	<% try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
-      		PreparedStatement pst = conn.prepareStatement("select p.po_id,p.order_id,p.supplier_id,p.warehouse_id,p.delivery_date,p1.quantity_ordered,g.name,g.description,p.po_status from retail1.purchase_order p inner join retail1.purchase_order_item p1 on p.po_id=p1.po_id inner join retail1.global_item g on p1.item_id=g.item_id");
+      		PreparedStatement pst = conn.prepareStatement("select p.po_id,p.order_id,p.supplier_id,p.delivery_date,p1.quantity_ordered,g.name,g.description,p.po_status from retail1.purchase_order p inner join retail1.purchase_order_item p1 on p.po_id=p1.po_id inner join retail1.global_item g on p1.item_id=g.item_id");
 	      		//System.out.println(option[0]);
 	      	ResultSet rs = pst.executeQuery();
   	%>	
@@ -150,7 +154,6 @@ tr:nth-child(even) {
     <th><strong>Purchase ID</strong></th>
     <th><strong>Order ID</strong></th>
     <th><strong>Supplier ID</strong></th>
-    <th><strong>Warehouse ID</strong></th>
     <th><strong>Delivery Date</strong></th>
     <th><strong>Quantity Ordered</strong></th>
     <th><strong>Item Name</strong></th>
@@ -162,19 +165,85 @@ tr:nth-child(even) {
   	<td><%=rs.getInt(1)%></td>
   	<td><%=rs.getInt(2)%></td>
   	<td><%=rs.getInt(3)%></td>
-  	<td><%=rs.getInt(4)%></td>
-  	<td><%=rs.getString(5)%></td>
-  	<td><%=rs.getInt(6)%></td>
+  	<td><%=rs.getString(4)%></td>
+  	<td><%=rs.getInt(5)%></td>
+  	<td><%=rs.getString(6)%></td>
   	<td><%=rs.getString(7)%></td>
   	<td><%=rs.getString(8)%></td>
-  	<td><%=rs.getString(9)%></td>
   	</tr>
   	<%} %>   
   	</table>
   	</div>
 <%} 
 catch(Exception e){e.printStackTrace();}%>
-</h2>
+    <div>
+    <strong>Warehouse Orders</strong>
+    	<% try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
+      		PreparedStatement pst = conn.prepareStatement("select w.order_id,w.quantity_ordered,g.name,g.description,g.item_id from retail1.warehouse_order w inner join retail1.global_item g on w.item_id=g.item_id");
+	      		//System.out.println(option[0]);
+	      	PreparedStatement pst1 = conn.prepareStatement("select supplier_id,supplier_name from retail1.supplier");
+	      	ResultSet rs = pst.executeQuery();
+	      	ResultSet rs1 = pst1.executeQuery();
+
+  	%>	
+  	<div align="left">
+  	<form method="post" action="InsertPom">
+  	<table>
+  	<tr>
+    <th><strong>Order ID</strong></th>
+    <th><strong>Supplier Details</strong></th>
+    <th><strong>Quantity Ordered</strong></th>
+    <th><strong>Item Name</strong></th>
+    <th><strong>Item Description</strong></th>
+    <th><strong>Expected Date</strong></th>
+    <th><strong>Click</strong></th>
+    
+    </tr>
+  	<%while(rs.next()) {
+  	%>
+  	<tr>
+  	<td><%=rs.getInt(1)%></td>
+  	<td><select name="supplier" id="supplier">
+        <%  while(rs1.next()){ %>
+            <option value="<%=rs1.getInt(1)%>"><%=(Integer.toString(rs1.getInt(1))+"-"+rs1.getString(2))%></option>
+        <% } %>
+        </select></td>
+  	<td><%=rs.getInt(2)%></td>
+  	<td><%=rs.getString(3)%></td>
+  	<td><%=rs.getString(4)%></td>
+  	<td><input type="text" name="date" id="date" value=""></td>
+  	<td><input type="checkbox" name="box" id="box" value="<%=i++%>"></td>
+  	</tr>
+  	   																																																														
+  	</table>
+  	<button type="submit" name="click">Send</button>
+  	<%System.out.println((String)request.getAttribute("supplier"));
+  	System.out.println(rs.getInt(1)+" "+(String)request.getAttribute("date")+" "+rs.getInt(5)+" "+rs.getInt(2));
+  	obj=new Pom(rs.getInt(1),ord,rs.getInt(5),rs.getInt(2)); %>
+  	
+  	<%list.add(obj);
+  	System.out.println(list.size());
+  	String json=gson.toJson(list);
+  	
+  	%><input type="hidden" name="updateList" value='<%=gson.toJson(list) %>'></input>
+  	<input type="hidden" name="name" value="<%=name %>"></input>
+  	<input type="hidden" name="uid" value="<%=uid %>"></input>
+  	<%System.out.println(request.getParameter("name"));
+  	} %>
+  	<%
+  	/*request.setAttribute("updateList", list); 
+  	request.setAttribute("name", name);
+  	request.setAttribute("uid", uid);
+  	RequestDispatcher rd = request.getRequestDispatcher("InsertPom");
+  	rd.forward(request, response);*/
+  	%>
+  	</form>
+  	</div>
+<%}
+catch(Exception e){e.printStackTrace();}%>
+
 </div>
 </div>
 </div>
