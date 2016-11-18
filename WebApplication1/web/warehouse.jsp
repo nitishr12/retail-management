@@ -149,7 +149,7 @@ tr:nth-child(even) {
   	<%=line2 %><br>
   	<%=city %><br>
   	<br>
-  	<strong>Warehouse Stock Items:</strong>
+  	<strong>Warehouse Items:</strong>
   	<div align="center">
   	<table>
   	<tr>

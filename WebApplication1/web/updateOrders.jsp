@@ -123,8 +123,8 @@ tr:nth-child(even) {
     <title>Update Orders</title>    
   </head>
   <body>
-  <%Order obj=null;
-  int item_id=0;
+  <%Order obj[]=null;
+  
   String options[]=null;%>
  <div class="container">
   <div class="warehouse">
@@ -133,42 +133,47 @@ tr:nth-child(even) {
             Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
       		String option[]=request.getParameterValues("id");
       		options=option;
-      		if(option.length>0){
-	      		PreparedStatement pst = conn.prepareStatement("select s.order_id,g.description,s1.quantity_ordered,s.delivery_date,s.status,s1.item_id from retail1.store_order s inner join retail1.store_order_item s1 on s.order_id=s1.order_id inner join retail1.global_item g on s1.item_id=g.item_id where s.order_id=?");
-	      		pst.setInt(1, Integer.parseInt(option[0]));
-	      		//System.out.println(option[0]);
-	      		ResultSet rs = pst.executeQuery();
-	      		rs.next();
-	      		obj=new Order(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getString(5));
-	      		item_id=rs.getInt(6);
-      		}
+      		obj=new Order[option.length];
+      		ResultSet rs[]=new ResultSet[option.length];
+      		for(int i=0;i<option.length;i++){
+	      		System.out.println(option[i]);
+	      		PreparedStatement pst = conn.prepareStatement("select s.order_id,g.description,s1.quantity_ordered,s.delivery_date,s.status,s1.item_id from retail1.store_order s inner join retail1.store_order_item s1 on s.order_id=s1.order_id inner join retail1.global_item g on s1.item_id=g.item_id where s.order_id=? and s1.item_id=?");
+	      		pst.setInt(1, Integer.parseInt(option[i].substring(0, option[i].indexOf('+'))));
+	      		pst.setInt(2, Integer.parseInt(option[i].substring(option[i].indexOf('+')+1)));
+	      		System.out.println(pst.toString());
+	      		rs[i] = pst.executeQuery();}
+      			int i=0;
+	      		while(rs[i].next()){
+	      		obj[i++]=new Order(rs[i-1].getInt(1),rs[i-1].getString(2),rs[i-1].getInt(3),rs[i-1].getString(4),rs[i-1].getString(5),rs[i-1].getInt(6));%>
+	      		<form action="executeQuery" method="post">
+	      	    <table>
+	      	    <tr>
+	      	    <th><strong>Order Number</strong></th>
+	      	    <th><strong>Item</strong></th>
+	      	    <th><strong>Quantity Required</strong></th>
+	      	    <th><strong>DeliveryDate</strong></th>
+	      	    <th><strong>Status</strong></th></tr>
+	      	    <tr>
+	      	    <td><%=obj[i-1].orderID%></td>
+	      	    <td><%=obj[i-1].desc%></td>
+	      	  	<td><input type="text" name="quantity" value=<%=obj[i-1].quantityOrdered%>></td>
+	      	  	<td><%=obj[i-1].deliveryDate%></td>
+	      	  	<td><%=obj[i-1].order%></td>
+	      	    </tr>     
+	      	    </table>
+	      	    <input type="hidden" name="item_id" value=<%=obj[i-1].item_id %>>
+	      	    <input type="hidden" name="order" value=<%=obj[i-1].orderID%>>
+	      	    <button type="submit" class="btn btn--right">OK</button>
+	      	    </form>
+	      		<% }
       		//System.out.println(rs.getInt(1)+" "+rs.getInt(2)+" "+rs.getString(3)+" "+rs.getString(4));
   	}
   	catch(Exception e){
 		e.printStackTrace();
 	}
       %> 
-      <%if(obj!=null) {%>
-    <form action="executeQuery" method="post">
-    <table>
-    <tr>
-    <th><strong>Order Number</strong></th>
-    <th><strong>Item</strong></th>
-    <th><strong>Quantity Required</strong></th>
-    <th><strong>DeliveryDate</strong></th>
-    <th><strong>Status</strong></th></tr>
-    <tr>
-    <td><%=obj.orderID%></td>
-    <td><%=obj.desc%></td>
-  	<td><input type="text" name="quantity" value=<%=obj.quantityOrdered%>></td>
-  	<td><%=obj.deliveryDate%></td>
-  	<td><%=obj.order%></td>
-    </tr>     
-    </table>
-    <input type="hidden" name="item_id" value=<%=item_id %>>
-    <input type="hidden" name="order" value=<%=obj.orderID%>>
-    <button type="submit" class="btn btn--right">OK</button>
-    </form>
+      <%for(int i=0;i<obj.length;i++) {%>
+    
     <% }%>
     <%if(obj==null) { 
     	String updateStatus=(String)request.getAttribute("updateStatus");

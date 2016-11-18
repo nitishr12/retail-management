@@ -59,8 +59,8 @@ public class viewOrder extends HttpServlet {
                 order.setDelivery_date(rs.getString(3));
                 order.setPrice(rs.getInt(4));
                 order.setStatus(rs.getString(5));
-                order.setItem_id(rs.getInt(6));
-                order.setQuantity_ordered(rs.getInt(7));
+                order.setItem_id(rs.getInt(7));
+                order.setQuantity_ordered(rs.getInt(8));
                 itemList1.add(order);
             }
             con.close();

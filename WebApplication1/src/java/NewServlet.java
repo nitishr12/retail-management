@@ -68,7 +68,16 @@ public class NewServlet extends HttpServlet {
                     request.setAttribute("userid", rs.getString(3));
                     RequestDispatcher rd2= request.getRequestDispatcher("warehouse.jsp");
                     rd2.include(request, response);
-                }  
+                }
+               else if(rs.getString(2).equals("POM User"))
+               //if(true)
+                {
+                    //out.println("Welcome "+rs.getString(1));
+                    request.setAttribute("name", rs.getString(1));
+                    request.setAttribute("userid", rs.getString(3));
+                    RequestDispatcher rd2= request.getRequestDispatcher("pom.jsp");
+                    rd2.include(request, response);
+                } 
                else if(rs.getString(2).equals("Store Representative"))
                {
                     out.println("Welcome "+rs.getString(1));

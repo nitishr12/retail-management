@@ -137,7 +137,7 @@ tr:nth-child(even) {
     </tr>
   	<%for(i=0;i<result.size();i++) { obj=result.get(i);%>
   	<tr>
-  	<td><input type="checkbox" name="id" value=<%=obj.orderID %>></td>
+  	<td><input type="checkbox" name="id" value=<%=Integer.toString(obj.orderID)+"+"+Integer.toString(obj.item_id) %>></td>
   	<td><%=obj.orderID%></td>
   	<td><%=obj.desc %></td>
   	<td><%=obj.quantityOrdered%></td>
