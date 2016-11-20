@@ -42,7 +42,7 @@ public class DeleteOrder extends HttpServlet {
          int oidnum=0;
         
             Class.forName("com.mysql.jdbc.Driver");  
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1","root","admin");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1","root","root");
             if(action.equals("delete")){
                 System.out.println("If in deleteorder.java before parse"+orderid);
                 oidnum=Integer.parseInt(orderid);

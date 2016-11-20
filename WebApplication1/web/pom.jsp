@@ -141,7 +141,7 @@ tr:nth-child(even) {
 	 <strong>PO Orders to POM User:</strong>
       	<% try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
       		PreparedStatement pst = conn.prepareStatement("select p.po_id,p.order_id,p.supplier_id,p1.quantity_ordered,g.name,g.description,p.po_status from retail1.purchase_order p inner join retail1.purchase_order_item p1 on p.po_id=p1.po_id inner join retail1.global_item g on p1.item_id=g.item_id");
 	      		//System.out.println(option[0]);
 	      	ResultSet rs = pst.executeQuery();

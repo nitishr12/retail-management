@@ -55,7 +55,7 @@ public class executeQuery extends HttpServlet {
 		if(order!=null){
 			try {
 	            Class.forName("com.mysql.jdbc.Driver");
-	            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
+	            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
 	            PreparedStatement pst = conn.prepareStatement("update warehouse_stock set quantity_available=quantity_available-? where item_id=?") ;
 	            pst.setInt(1, Integer.parseInt(quantity));
 	            pst.setInt(2, Integer.parseInt(item_id));

@@ -42,7 +42,7 @@ public class viewOrder extends HttpServlet {
         try{
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","admin");
+            "jdbc:mysql://localhost:3306/retail1","root","root");
             String query="select * from store_order so inner join store_order_item soi on so.order_id=soi.order_id ORDER BY so.order_id DESC";
             PreparedStatement stmt=con.prepareStatement(query);
             //stmt.setString(1, userName);

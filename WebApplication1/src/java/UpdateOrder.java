@@ -44,7 +44,7 @@ public class UpdateOrder extends HttpServlet {
          int oidnum=0,iidnum=0,quantnum=0;
         
             Class.forName("com.mysql.jdbc.Driver");  
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1","root","admin");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1","root","root");
             if(action.equals("update")){
                 System.out.println("If in updateorder.java before parse"+orderid+" item id "+itemid+" quaaant="+quantity);
                  oidnum=Integer.parseInt(orderid);

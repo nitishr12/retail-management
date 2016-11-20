@@ -57,7 +57,7 @@ public class Confirm_Cart extends HttpServlet {
             try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","admin");
+            "jdbc:mysql://localhost:3306/retail1","root","root");
             
             List<StoreItem> list = (List<StoreItem>) request.getSession().getAttribute("cart");
                 System.out.println("Confirm_Cart.processRequest() size  is -- "+list.size());

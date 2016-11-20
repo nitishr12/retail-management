@@ -55,7 +55,7 @@ public class StoreHomeList extends HttpServlet {
         try{  
             Class.forName("com.mysql.jdbc.Driver");  
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/retail1","root","admin");
+            "jdbc:mysql://localhost:3306/retail1","root","root");
             String query="select * from global_item";
             PreparedStatement stmt=con.prepareStatement(query);
             //stmt.setString(1, userName);

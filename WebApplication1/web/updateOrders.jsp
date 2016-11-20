@@ -130,7 +130,7 @@ tr:nth-child(even) {
   <div class="warehouse">
   	<%try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
       		String option[]=request.getParameterValues("id");
       		options=option;
       		obj=new Order[option.length];

@@ -55,7 +55,7 @@ public class Warehouse extends HttpServlet {
 		String userid=request.getParameter("userid").trim();
 		try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "admin");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
             PreparedStatement pst = conn.prepareStatement("select w.name,w.address_line_1,w.address_line_2,l.city,w.warehouse_id from retail1.warehouse w inner join retail1.warehouse_manager w1 on w.warehouse_id=w1.warehouse_id inner join retail1.user u on w1.uid=u.uid inner join location l on w.zipcode=l.zipcode where u.uid=?");
             pst.setInt(1, Integer.parseInt(userid));
             ResultSet rs = pst.executeQuery();
