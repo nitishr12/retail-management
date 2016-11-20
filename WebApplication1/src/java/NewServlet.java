@@ -78,6 +78,21 @@ public class NewServlet extends HttpServlet {
                     RequestDispatcher rd2= request.getRequestDispatcher("pom.jsp");
                     rd2.include(request, response);
                 } 
+               else if(rs.getString(2).equals("Supplier"))
+               {
+                    out.println("Welcome "+rs.getString(1));
+                    String query1="select supplier_id from supplier_representative where uid=?";
+                    PreparedStatement stmt1=con.prepareStatement(query1);
+                    stmt1.setString(1,rs.getString(3));
+                    ResultSet rs2=stmt1.executeQuery();
+                    while(rs2.next()){
+                        int supplier_id=rs2.getInt(1);
+                        request.getSession().setAttribute("supplier_id", supplier_id);
+                    }
+                    
+                    RequestDispatcher rd2= request.getRequestDispatcher("Supplier");
+                    rd2.include(request, response);
+                } 
                else if(rs.getString(2).equals("Store Representative"))
                {
                     out.println("Welcome "+rs.getString(1));

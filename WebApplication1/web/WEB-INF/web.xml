@@ -12,6 +12,14 @@
         <servlet-name>UpdateOrder</servlet-name>
         <servlet-class>UpdateOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Supplier</servlet-name>
+        <servlet-class>Supplier</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCarton</servlet-name>
+        <servlet-class>ViewCarton</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddItem</servlet-name>
         <url-pattern>/AddItem</url-pattern>
@@ -24,7 +32,6 @@
         <servlet-name>UpdateOrder</servlet-name>
         <url-pattern>/UpdateOrder</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>Warehouse</servlet-name>
         <servlet-class>Warehouse</servlet-class>
@@ -33,7 +40,6 @@
         <servlet-name>Warehouse</servlet-name>
         <url-pattern>/Warehouse</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>WarehouseOrder</servlet-name>
         <servlet-class>WarehouseOrder</servlet-class>
@@ -57,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>InsertPom</servlet-name>
         <url-pattern>/InsertPom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Supplier</servlet-name>
+        <url-pattern>/Supplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCarton</servlet-name>
+        <url-pattern>/ViewCarton</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
