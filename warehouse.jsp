@@ -164,6 +164,38 @@ tr:nth-child(even) {
       		%>
     </table>
     <br><br>
+    <b>PO Orders</b>
+      <table>
+  	<tr>
+    <th><strong>PO ID</strong></th>
+    <th><strong>Items</strong></th>
+    <th><strong>PO Status</strong></th>
+    
+    </tr>
+    <%try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/retail1", "root", "root");
+            PreparedStatement pst = conn.prepareStatement("select p.po_id,GROUP_CONCAT(g.description SEPARATOR ' ; ') AS `items`,p.po_status from retail1.purchase_order_item pi inner join retail1.global_item g on g.item_id=pi.item_id inner join purchase_order p on pi.po_id=p.po_id");
+      		ResultSet rs=pst.executeQuery();
+      		while(rs.next()){%>
+            	<tr>
+	      	    <td><%=rs.getInt(1)%></td>
+	      	    <td><%=rs.getString(2)%></td>
+	      	  	<td>
+	      	  	<form action="UpdateStatus" method="post">
+	      	  	<input type="hidden" name="po" value="<%=rs.getInt(1)%>">
+	      	  	<input type="text" name="status" value="<%=rs.getString(3)%>">
+	      	  	<input type="submit" name="updateStatus" value="Update">
+	      	  	</form>
+	      	  	</td>
+	      	    </tr>
+      		<%}
+    }
+            catch(Exception e){}
+      		%>
+    </table>
+    <br><br>
+    
     <b>Orders by Items from Supplier</b>
     <table>
   	<tr>
@@ -208,9 +240,7 @@ tr:nth-child(even) {
       	    
   		<%}
   		
-  		%>
-  		
-            
+  		%>    
 <%}
         catch(Exception e){}
   		%>
